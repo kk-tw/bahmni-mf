@@ -1,0 +1,15 @@
+{
+    "processors": [
+        "stylelint-processor-styled-components"
+    ],
+    "extends": [
+        "stylelint-config-standard",
+        "stylelint-config-styled-components",
+        "stylelint-config-prettier"
+    ],
+    "customSyntax": "postcss-scss",
+    "rules": {
+        "color-no-hex": true,
+        "declaration-no-important": true
+    }
+}

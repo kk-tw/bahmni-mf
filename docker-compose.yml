@@ -1,0 +1,42 @@
+version: '3'
+
+services:
+  components:
+    build:
+      context: ./mf-components
+      args:
+      - PUBLIC_URL=/compnents
+    networks:
+      - test
+
+  consultation:
+    build:
+      context: ./mf-consultation
+      args:
+      - PUBLIC_URL=/consultation
+    networks:
+      - test
+
+  host:
+      build:
+        context: ./mf-host
+        args:
+        - PUBLIC_URL=/
+      networks:
+        - test
+
+
+  gateway:
+    build:
+      context: ./gateway
+    ports:
+      - 3000:80
+    networks:
+      - test
+    depends_on:
+      - components
+      - consultation
+      - host
+
+networks:
+  test:
