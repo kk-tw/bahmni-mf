@@ -13,7 +13,7 @@ import {
 const App = () => (
     <>
         <GlobalStyle />
-        <Button renderIcon={AddIcon}>Hi there</Button>
+        <Button renderIcon={AddIcon}>Hi! there</Button>
         <SlidingModal open>
             <ModalHeader title="Record Diagnoses"></ModalHeader>
             <ModalBody>

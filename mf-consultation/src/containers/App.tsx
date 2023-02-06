@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
     Button,
     FormGroup,
@@ -11,6 +12,7 @@ import {
     RadioButtonGroup,
     AddIcon,
 } from '@bahmni-mf/components/ComponentLibrary';
+import '../i18n';
 
 interface DiagnoisInfo {
     searchValue: string;
@@ -18,6 +20,7 @@ interface DiagnoisInfo {
 }
 
 const App = () => {
+    const { t: translate } = useTranslation();
     const [modelOpen, setModalOpen] = useState(false);
     const [searchValue, setSearchValue] = useState<string>('');
     const [orderValue, setOrderValue] = useState<string>('');
@@ -44,14 +47,16 @@ const App = () => {
                 size="sm"
                 renderIcon={AddIcon}
             >
-                Add diagnoses
+                {translate('ADD_DIAGNOSIS')}
             </Button>
             <SlidingModal open={modelOpen} onClose={() => setModalOpen(false)}>
-                <ModalHeader title="Record Diagnoses"></ModalHeader>
+                <ModalHeader
+                    title={translate('RECORD_DIAGNOSIS')}
+                ></ModalHeader>
                 <ModalBody>
-                    <FormGroup legendText={'Diagnoses'}>
+                    <FormGroup legendText={translate('DIAGNOSES') || ''}>
                         <Search
-                            labelText="Search Diagnoses"
+                            labelText={translate('SEARCH_DIAGNOSIS') as string}
                             placeholder="Search Diagnoses"
                             value={searchValue}
                             onChange={event =>
@@ -61,17 +66,19 @@ const App = () => {
                     </FormGroup>
                     {searchValue.length ? (
                         <RadioButtonGroup
-                            legendText={'Order'}
+                            legendText={translate('DIAGNOSIS_ORDER')}
                             name="order"
                             onChange={value => setOrderValue(value as string)}
                         >
                             <RadioButton
-                                labelText="Primary"
+                                labelText={translate('DIAGNOSIS_ORDER_PRIMARY')}
                                 value="primary"
                                 checked={orderValue === 'primary'}
                             />
                             <RadioButton
-                                labelText="Secondary"
+                                labelText={translate(
+                                    'DIAGNOSIS_ORDER_SECONDARY',
+                                )}
                                 value="secondary"
                                 checked={orderValue === 'secondary'}
                             />
@@ -79,8 +86,8 @@ const App = () => {
                     ) : null}
                 </ModalBody>
                 <ModalFooter
-                    primaryButtonText="Save"
-                    secondaryButtonText="Cancel"
+                    primaryButtonText={translate('SAVE') || ''}
+                    secondaryButtonText={translate('CANCEL') || ''}
                     onRequestSubmit={addDiagnosis}
                     onRequestClose={closeSlider}
                     primaryButtonDisabled={

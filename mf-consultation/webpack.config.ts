@@ -4,6 +4,7 @@ import { Configuration as WebpackDevServerConfiguration } from 'webpack-dev-serv
 import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
 import ESLintPlugin from 'eslint-webpack-plugin';
 import StyleLintPlugin from 'stylelint-webpack-plugin';
+import CopyPlugin from 'copy-webpack-plugin';
 import FederatedTypesPlugin from '@module-federation/typescript';
 import { ModuleFederationPluginOptions } from '@module-federation/typescript/src/types';
 import path from 'path';
@@ -76,6 +77,7 @@ const config: Configuration = {
         historyApiFallback: {
             index: 'index.html',
         },
+        liveReload: false,
     },
     devtool: isProduction ? false : 'eval-cheap-module-source-map',
 
@@ -109,6 +111,14 @@ const config: Configuration = {
         }),
         new ForkTsCheckerWebpackPlugin({
             async: false,
+        }),
+        new CopyPlugin({
+            patterns: [
+                {
+                    from: path.resolve(__dirname, './public/locales'),
+                    to: path.resolve(__dirname, './dist/locales'),
+                },
+            ],
         }),
         ...lintPlugins,
     ],
