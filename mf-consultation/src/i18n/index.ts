@@ -12,6 +12,10 @@ i18n.use(LanguageDetector)
             escapeValue: false,
         },
         load: 'languageOnly',
+        ns: ['clinical'],
+        backend: {
+            loadPath: '/bahmni/i18n/{{ns}}/locale_{{lng}}.json',
+        },
     });
 
 export default i18n;

@@ -2,11 +2,11 @@
     "ADD_DIAGNOSIS": "Add diagnosis",
     "DATE_TIME": "{{val, datetime}}",
     "RECORD_DIAGNOSIS": "Record Diagnosis",
-    "DIAGNOSES": "Diagnoses",
+    "CLINICAL_DIAGNOSIS": "Diagnoses",
     "SEARCH_DIAGNOSIS": "Search diagnoses",
-    "DIAGNOSIS_ORDER": "Order",
-    "DIAGNOSIS_ORDER_PRIMARY": "Primary",
-    "DIAGNOSIS_ORDER_SECONDARY": "Secondary",
+    "CLINICAL_ORDER": "Order",
+    "CLINICAL_DIAGNOSIS_ORDER_PRIMARY": "Primary",
+    "CLINICAL_DIAGNOSIS_ORDER_SECONDARY": "Secondary",
     "SAVE": "Save",
     "CANCEL": "Cancel"
 }

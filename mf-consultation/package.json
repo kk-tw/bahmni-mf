@@ -29,6 +29,7 @@
         "@types/carbon-components-react": "^7.55.2",
         "@types/fork-ts-checker-webpack-plugin": "^0.4.5",
         "@types/jest": "^29.2.5",
+        "@types/node": "^18.13.0",
         "@types/react": "^18.0.26",
         "@types/react-dom": "^18.0.10",
         "@types/styled-components": "^5.1.26",
@@ -39,8 +40,10 @@
         "autoprefixer": "^10.4.13",
         "babel-jest": "^29.3.1",
         "babel-loader": "^9.1.2",
+        "clean-webpack-plugin": "^4.0.0",
         "copy-webpack-plugin": "^11.0.0",
         "css-loader": "^6.7.3",
+        "dotenv": "^16.0.3",
         "eslint": "^8.32.0",
         "eslint-config-prettier": "^8.6.0",
         "eslint-import-resolver-typescript": "^3.5.3",
@@ -83,6 +86,7 @@
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
         "react-i18next": "^12.1.4",
+        "react-query": "^3.39.3",
         "styled-components": "^5.3.6"
     },
     "lint-staged": {
