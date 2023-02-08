@@ -8,6 +8,7 @@ const federationConfig: ModuleFederationPluginOptions = {
     filename: 'remoteEntry.js',
     remotes: {
         '@bahmni-mf/consultation': `bahmni_mf_consultation@${ENV_VALUES.CONSULTATION_URL}/remoteEntry.js`,
+        '@bahmni-mf/components': `bahmni_mf_component_library@${ENV_VALUES.COMPONENTS_URL}/remoteEntry.js`,
     },
     exposes: {},
     shared: {

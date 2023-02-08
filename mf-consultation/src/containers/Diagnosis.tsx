@@ -59,7 +59,7 @@ const Diagnosis = () => {
                 size="lg"
                 renderIcon={AddIcon}
             >
-                {translate('ADD_DIAGNOSIS', { ns: 'clinical' })}
+                {translate('ADD_DIAGNOSIS')}
             </Button>
             <SlidingModal open={modelOpen} onClose={() => setModalOpen(false)}>
                 <ModalHeader

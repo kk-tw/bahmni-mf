@@ -1,14 +1,17 @@
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import '../i18n';
-import Diagnosis from './Diagnosis';
 
 const App = () => {
     const queryClient = new QueryClient();
 
+    const DiagnosisLazy = lazy(() => import('./Diagnosis'));
+
     return (
         <QueryClientProvider client={queryClient}>
-            <Diagnosis />
+            <Suspense fallback={<p>Loading!</p>}>
+                <DiagnosisLazy />
+            </Suspense>
         </QueryClientProvider>
     );
 };
