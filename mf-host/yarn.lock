@@ -1383,6 +1383,16 @@
     next "^12 || ^13"
     react "^17 || ^18"
 
+"@module-federation/utilities@^1.2.0":
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@module-federation/utilities/-/utilities-1.2.0.tgz#413ac8457634d0c7b01114f39f63260d1179c0e9"
+  integrity sha512-TM0cVI59Skk6wvT4OTyCYqGJp8t0fOxl0evqacwOog50Si90KTfNpFBfGRmJp3Gj1Qp1x8gXaqgND0/rmvMAiw==
+  dependencies:
+    tslib "2.4.0"
+  optionalDependencies:
+    next "^12 || ^13"
+    react "^17 || ^18"
+
 "@next/env@13.1.2":
   version "13.1.2"
   resolved "https://registry.yarnpkg.com/@next/env/-/env-13.1.2.tgz#4f13e3e9d44bb17fdc1d4543827459097035f10f"
