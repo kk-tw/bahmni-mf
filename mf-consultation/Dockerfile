@@ -4,6 +4,7 @@ WORKDIR /var/lib/app/
 COPY . .
 
 ARG PUBLIC_URL
+ARG COMPONENTS_URL=http://localhost:3000/components
 RUN yarn
 RUN yarn build
 
