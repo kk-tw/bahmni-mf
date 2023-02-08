@@ -15,7 +15,7 @@ const config: Configuration = {
         extensions: ['.tsx', '.ts', '.jsx', '.js', '.json'],
     },
     output: {
-        filename: isProduction ? '[name].js' : '[name].[contenthash].js',
+        filename: '[name].[contenthash].js',
         path: path.resolve(__dirname, 'dist'),
     },
     devServer: webpackDevServerSettings,

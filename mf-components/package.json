@@ -4,7 +4,7 @@
     "scripts": {
         "build": "webpack --mode production",
         "build:dev": "webpack --mode development",
-        "build:start": "cd dist && PORT=8082 npx serve",
+        "build:start": "cd dist && PORT=9002 npx serve",
         "start": "webpack serve --open --mode development",
         "start:live": "webpack serve --open --mode development --live-reload --hot",
         "eslint": "eslint src/**/*.{ts,tsx} src/*.{ts,tsx}",
@@ -49,7 +49,9 @@
         "autoprefixer": "^10.4.13",
         "babel-jest": "^29.3.1",
         "babel-loader": "^9.1.2",
+        "clean-webpack-plugin": "^4.0.0",
         "css-loader": "^6.7.3",
+        "dot-env": "^0.0.1",
         "eslint": "^8.32.0",
         "eslint-config-prettier": "^8.6.0",
         "eslint-import-resolver-typescript": "^3.5.3",

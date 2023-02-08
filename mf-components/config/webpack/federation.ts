@@ -4,13 +4,10 @@ import ENV_VALUES, { isProduction } from './env';
 import { dependencies } from '../../package.json';
 
 const federationConfig: ModuleFederationPluginOptions = {
-    name: 'bahmni_mf_consultation',
+    name: 'bahmni_mf_component_library',
     filename: 'remoteEntry.js',
-    remotes: {
-        '@bahmni-mf/components': `bahmni_mf_component_library@${ENV_VALUES.COMPONENTS_URL}/remoteEntry.js`,
-    },
     exposes: {
-        './ConsultationApp': './src/bootstrap',
+        './ComponentLibrary': './src/components/index',
     },
     shared: {
         ...dependencies,

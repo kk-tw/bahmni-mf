@@ -3,7 +3,7 @@ import path from 'path';
 import ENV_VALUES from './env';
 
 const webpackDevServerSettings: WebpackDevServerConfiguration = {
-    port: ENV_VALUES.port || 9001,
+    port: ENV_VALUES.port || 9002,
     static: {
         directory: path.join(__dirname, '../../dist'),
     },
