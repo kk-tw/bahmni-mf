@@ -1,0 +1,12 @@
+{
+    "ADD_DIAGNOSIS": "Add diagnosis global",
+    "DATE_TIME": "{{val, datetime}}",
+    "RECORD_DIAGNOSIS": "Record Diagnosis",
+    "DIAGNOSES": "Diagnoses",
+    "SEARCH_DIAGNOSIS": "Search diagnoses",
+    "DIAGNOSIS_ORDER": "Order",
+    "DIAGNOSIS_ORDER_PRIMARY": "Primary",
+    "DIAGNOSIS_ORDER_SECONDARY": "Secondary",
+    "SAVE": "Save",
+    "CANCEL": "Cancel"
+}
