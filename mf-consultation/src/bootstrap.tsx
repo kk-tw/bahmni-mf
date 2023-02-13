@@ -4,9 +4,9 @@ import App from './containers/App';
 
 let root: Root;
 
-const mount = (el: HTMLElement) => {
+const mount = (el: HTMLElement, renderComponent: string) => {
     root = createRoot(el);
-    root.render(<App />);
+    root.render(<App renderComponent={renderComponent} />);
 };
 
 export const unmount = () => {
@@ -15,7 +15,7 @@ export const unmount = () => {
 
 const container = document.getElementById('bahmni-mf-consultation');
 if (container) {
-    mount(container);
+    mount(container, 'Diagnosis');
 }
 
 export default mount;

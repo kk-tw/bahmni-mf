@@ -15,25 +15,25 @@ import {
 } from '@bahmni-mf/components/ComponentLibrary';
 import fetchDiagnosisSuggestions from '../queries/diagnosis';
 
-interface DiagnoisInfo {
+interface MedicationsInfo {
     searchValue: string;
     orderValue: string;
 }
 
-const Diagnosis = () => {
+const Medications = () => {
     const { t: translate } = useTranslation();
     const [modelOpen, setModalOpen] = useState(false);
     const [searchValue, setSearchValue] = useState<string>('');
     const [orderValue, setOrderValue] = useState<string>('');
 
-    const addDiagnosis = () => {
-        const addDiagnosisEvent = new CustomEvent<DiagnoisInfo>(
-            'ADD_DIAGNOSIS',
+    const addMedications = () => {
+        const addMedicationsEvent = new CustomEvent<MedicationsInfo>(
+            'ADD_MEDICATIONS',
             {
                 detail: { searchValue, orderValue },
             },
         );
-        window.dispatchEvent(addDiagnosisEvent);
+        window.dispatchEvent(addMedicationsEvent);
     };
 
     const closeSlider = () => {
@@ -58,7 +58,7 @@ const Diagnosis = () => {
                 size="lg"
                 renderIcon={AddIcon}
             >
-                {translate('ADD_DIAGNOSIS')}
+                {translate('ADD_MEDICATIONS')}
             </Button>
             <SlidingModal open={modelOpen} onClose={() => setModalOpen(false)}>
                 <ModalHeader
@@ -103,7 +103,7 @@ const Diagnosis = () => {
                 <ModalFooter
                     primaryButtonText={translate('SAVE') || ''}
                     secondaryButtonText={translate('CANCEL') || ''}
-                    onRequestSubmit={addDiagnosis}
+                    onRequestSubmit={addMedications}
                     onRequestClose={closeSlider}
                     primaryButtonDisabled={
                         searchValue.length < 1 || orderValue.length < 1
@@ -114,4 +114,4 @@ const Diagnosis = () => {
     );
 };
 
-export default React.memo(Diagnosis);
+export default React.memo(Medications);

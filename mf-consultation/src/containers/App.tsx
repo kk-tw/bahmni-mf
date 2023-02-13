@@ -2,15 +2,19 @@ import React, { lazy, Suspense } from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import '../i18n';
 
-const App = () => {
+interface AppProps {
+    renderComponent: string;
+}
+
+const App: React.FC<AppProps> = ({ renderComponent }) => {
     const queryClient = new QueryClient();
 
-    const DiagnosisLazy = lazy(() => import('./Diagnosis'));
+    const ComponentLazy = lazy(() => import(`./${renderComponent}`));
 
     return (
         <QueryClientProvider client={queryClient}>
             <Suspense fallback={<p>Loading!</p>}>
-                <DiagnosisLazy />
+                <ComponentLazy />
             </Suspense>
         </QueryClientProvider>
     );

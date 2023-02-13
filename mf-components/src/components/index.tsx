@@ -7,6 +7,7 @@ import {
     ModalFooter,
     RadioButton,
     RadioButtonGroup,
+    ButtonSkeleton,
 } from 'carbon-components-react';
 import { Add as AddIcon } from '@carbon/icons-react';
 import '@carbon/styles/css/styles.css';
@@ -24,5 +25,6 @@ export {
     RadioButton,
     RadioButtonGroup,
     SlidingModal,
+    ButtonSkeleton,
     AddIcon,
 };
