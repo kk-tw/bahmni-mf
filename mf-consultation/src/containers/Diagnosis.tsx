@@ -3,51 +3,47 @@ import { useTranslation } from 'react-i18next';
 import { useQuery } from 'react-query';
 import {
     Button,
-    FormGroup,
     ModalBody,
     ModalHeader,
-    Search,
     SlidingModal,
     ModalFooter,
     RadioButton,
     RadioButtonGroup,
     AddIcon,
 } from '@bahmni-mf/components/ComponentLibrary';
-import fetchDiagnosisSuggestions from '../queries/diagnosis';
+import AutoComboBox from '../components/AutoComboBox';
+import { getDiagnosis } from '../queries/diagnosis';
 
 interface DiagnoisInfo {
-    searchValue: string;
+    currentDiagnosis: string;
     orderValue: string;
 }
 
 const Diagnosis = () => {
+    console.log('re-render');
     const { t: translate } = useTranslation();
     const [modelOpen, setModalOpen] = useState(false);
-    const [searchValue, setSearchValue] = useState<string>('');
+    const [currentDiagnosis, setCurrentDiagnosis] = useState<string>('');
     const [orderValue, setOrderValue] = useState<string>('');
+    const [certaintyValue, setCertaintyValue] = useState<string>('');
 
     const addDiagnosis = () => {
         const addDiagnosisEvent = new CustomEvent<DiagnoisInfo>(
             'ADD_DIAGNOSIS',
             {
-                detail: { searchValue, orderValue },
+                detail: { currentDiagnosis, orderValue },
             },
         );
         window.dispatchEvent(addDiagnosisEvent);
     };
 
     const closeSlider = () => {
-        setSearchValue('');
         setOrderValue('');
     };
 
-    const { isLoading, error, data } = useQuery(
-        'diagnoisSuggestion',
-        fetchDiagnosisSuggestions,
-        {
-            refetchOnWindowFocus: false,
-        },
-    );
+    const { isLoading, error, data } = useQuery('diagnosis', getDiagnosis, {
+        refetchOnWindowFocus: false,
+    });
 
     console.log(isLoading, error, data);
 
@@ -65,19 +61,17 @@ const Diagnosis = () => {
                     title={translate('RECORD_DIAGNOSIS')}
                 ></ModalHeader>
                 <ModalBody>
-                    <FormGroup
-                        legendText={translate('CLINICAL_DIAGNOSIS') || ''}
-                    >
-                        <Search
-                            labelText={translate('SEARCH_DIAGNOSIS') as string}
-                            placeholder="Search Diagnoses"
-                            value={searchValue}
-                            onChange={event =>
-                                setSearchValue(event.target.value)
-                            }
-                        ></Search>
-                    </FormGroup>
-                    {searchValue.length ? (
+                    <AutoComboBox
+                        placeholder={translate('SEARCH_DIAGNOSIS') as string}
+                        titleText={translate('CLINICAL_DIAGNOSIS')}
+                        id="diagnosis-search"
+                        onSelectItem={item =>
+                            setCurrentDiagnosis(
+                                item.selectedItem?.conceptName as string,
+                            )
+                        }
+                    />
+                    {currentDiagnosis ? (
                         <RadioButtonGroup
                             legendText={translate('CLINICAL_ORDER')}
                             name="order"
@@ -99,14 +93,40 @@ const Diagnosis = () => {
                             />
                         </RadioButtonGroup>
                     ) : null}
+                    {orderValue ? (
+                        <RadioButtonGroup
+                            legendText={translate('CLINICAL_CERTAINTY')}
+                            name="certainty"
+                            onChange={value =>
+                                setCertaintyValue(value as string)
+                            }
+                        >
+                            <RadioButton
+                                labelText={translate(
+                                    'CLINICAL_DIAGNOSIS_CERTAINTY_CONFIRMED',
+                                )}
+                                value="primary"
+                                checked={certaintyValue === 'confirmed'}
+                            />
+                            <RadioButton
+                                labelText={translate(
+                                    'CLINICAL_DIAGNOSIS_CERTAINTY_PRESUMED',
+                                )}
+                                value="secondary"
+                                checked={certaintyValue === 'presumed'}
+                            />
+                        </RadioButtonGroup>
+                    ) : null}
                 </ModalBody>
                 <ModalFooter
-                    primaryButtonText={translate('SAVE') || ''}
+                    primaryButtonText={translate('SAVE_KEY') || ''}
                     secondaryButtonText={translate('CANCEL') || ''}
                     onRequestSubmit={addDiagnosis}
                     onRequestClose={closeSlider}
                     primaryButtonDisabled={
-                        searchValue.length < 1 || orderValue.length < 1
+                        !currentDiagnosis ||
+                        orderValue.length < 1 ||
+                        certaintyValue.length < 1
                     }
                 ></ModalFooter>
             </SlidingModal>

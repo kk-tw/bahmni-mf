@@ -8,6 +8,7 @@ import {
     RadioButton,
     RadioButtonGroup,
     ButtonSkeleton,
+    ComboBox,
 } from 'carbon-components-react';
 import { Add as AddIcon } from '@carbon/icons-react';
 import '@carbon/styles/css/styles.css';
@@ -27,4 +28,5 @@ export {
     SlidingModal,
     ButtonSkeleton,
     AddIcon,
+    ComboBox,
 };

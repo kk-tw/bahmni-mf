@@ -6,7 +6,7 @@ const ConsultationMF = () => {
 
     useEffect(() => {
         if (ref.current) {
-            mount(ref.current);
+            mount(ref.current, 'Diagnosis');
         }
     }, []);
 

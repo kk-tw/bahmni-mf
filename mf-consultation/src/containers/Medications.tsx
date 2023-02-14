@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useQuery } from 'react-query';
 import {
     Button,
     FormGroup,
@@ -13,7 +12,6 @@ import {
     RadioButtonGroup,
     AddIcon,
 } from '@bahmni-mf/components/ComponentLibrary';
-import fetchDiagnosisSuggestions from '../queries/diagnosis';
 
 interface MedicationsInfo {
     searchValue: string;
@@ -40,16 +38,6 @@ const Medications = () => {
         setSearchValue('');
         setOrderValue('');
     };
-
-    const { isLoading, error, data } = useQuery(
-        'diagnoisSuggestion',
-        fetchDiagnosisSuggestions,
-        {
-            refetchOnWindowFocus: false,
-        },
-    );
-
-    console.log(isLoading, error, data);
 
     return (
         <>

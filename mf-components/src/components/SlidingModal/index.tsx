@@ -18,6 +18,12 @@ const SlidingModal = styled(ComposedModal)`
             transform: translate3d(100%, 0, 0);
         }
     }
+
+    .cds--modal-content {
+        & > * {
+            margin-bottom: 2em;
+        }
+    }
 `;
 
 export default SlidingModal;
