@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useQuery } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 import {
     Button,
     ModalBody,
@@ -10,30 +10,59 @@ import {
     RadioButton,
     RadioButtonGroup,
     AddIcon,
+    SkeletonText,
 } from '@bahmni-mf/components/ComponentLibrary';
 import AutoComboBox from '../components/AutoComboBox';
-import { getDiagnosis } from '../queries/diagnosis';
+import { getDiagnosis, saveDiagnosis } from '../queries/diagnosis';
+import { IDiagnosis, IDiagnosisSearchResult } from '../types/diagnosis';
 
-interface DiagnoisInfo {
-    currentDiagnosis: string;
-    orderValue: string;
+interface IDiagnosisInfo {
+    codedAnswer: {
+        name: string;
+        uuid: string;
+    };
+    order: string;
+    certainty: string;
 }
 
 const Diagnosis = () => {
-    console.log('re-render');
     const { t: translate } = useTranslation();
+    const queryClient = useQueryClient();
+
     const [modelOpen, setModalOpen] = useState(false);
-    const [currentDiagnosis, setCurrentDiagnosis] = useState<string>('');
+    const [currentDiagnosis, setCurrentDiagnosis] =
+        useState<IDiagnosisSearchResult>({
+            conceptName: '',
+            conceptUuid: '',
+        });
     const [orderValue, setOrderValue] = useState<string>('');
     const [certaintyValue, setCertaintyValue] = useState<string>('');
 
+    const { isLoading, data } = useQuery('diagnosis', getDiagnosis, {
+        refetchOnWindowFocus: false,
+    });
+
+    const saveDiagnosisMutation = useMutation({
+        mutationFn: saveDiagnosis,
+        onSuccess: () => {
+            queryClient.invalidateQueries({
+                queryKey: ['diagnosis'],
+            });
+        },
+    });
+
     const addDiagnosis = () => {
-        const addDiagnosisEvent = new CustomEvent<DiagnoisInfo>(
-            'ADD_DIAGNOSIS',
-            {
-                detail: { currentDiagnosis, orderValue },
-            },
-        );
+        console.log(currentDiagnosis);
+        const savedDiagnosis: IDiagnosis = {
+            order: orderValue,
+            certainty: certaintyValue,
+            uuid: currentDiagnosis.conceptUuid,
+        };
+
+        saveDiagnosisMutation.mutate(savedDiagnosis);
+        const addDiagnosisEvent = new CustomEvent<IDiagnosis>('ADD_DIAGNOSIS', {
+            detail: savedDiagnosis,
+        });
         window.dispatchEvent(addDiagnosisEvent);
     };
 
@@ -41,11 +70,9 @@ const Diagnosis = () => {
         setOrderValue('');
     };
 
-    const { isLoading, error, data } = useQuery('diagnosis', getDiagnosis, {
-        refetchOnWindowFocus: false,
-    });
-
-    console.log(isLoading, error, data);
+    if (isLoading) {
+        return <SkeletonText />;
+    }
 
     return (
         <>
@@ -56,6 +83,13 @@ const Diagnosis = () => {
             >
                 {translate('ADD_DIAGNOSIS')}
             </Button>
+            {data.map((eachDiagnois: IDiagnosisInfo, index: number) => (
+                <div key={`${eachDiagnois.codedAnswer.uuid}-${index}`}>
+                    {eachDiagnois.codedAnswer.name}
+                    Order: {eachDiagnois.order}
+                    Certainty: {eachDiagnois.certainty}
+                </div>
+            ))}
             <SlidingModal open={modelOpen} onClose={() => setModalOpen(false)}>
                 <ModalHeader
                     title={translate('RECORD_DIAGNOSIS')}
@@ -67,7 +101,7 @@ const Diagnosis = () => {
                         id="diagnosis-search"
                         onSelectItem={item =>
                             setCurrentDiagnosis(
-                                item.selectedItem?.conceptName as string,
+                                item.selectedItem as IDiagnosisSearchResult,
                             )
                         }
                     />
@@ -81,15 +115,15 @@ const Diagnosis = () => {
                                 labelText={translate(
                                     'CLINICAL_DIAGNOSIS_ORDER_PRIMARY',
                                 )}
-                                value="primary"
-                                checked={orderValue === 'primary'}
+                                value="PRIMARY"
+                                checked={orderValue === 'PRIMARY'}
                             />
                             <RadioButton
                                 labelText={translate(
                                     'CLINICAL_DIAGNOSIS_ORDER_SECONDARY',
                                 )}
-                                value="secondary"
-                                checked={orderValue === 'secondary'}
+                                value="SECONDARY"
+                                checked={orderValue === 'SECONDARY'}
                             />
                         </RadioButtonGroup>
                     ) : null}
@@ -105,15 +139,15 @@ const Diagnosis = () => {
                                 labelText={translate(
                                     'CLINICAL_DIAGNOSIS_CERTAINTY_CONFIRMED',
                                 )}
-                                value="primary"
-                                checked={certaintyValue === 'confirmed'}
+                                value="CONFIRMED"
+                                checked={certaintyValue === 'CONFIRMED'}
                             />
                             <RadioButton
                                 labelText={translate(
                                     'CLINICAL_DIAGNOSIS_CERTAINTY_PRESUMED',
                                 )}
-                                value="secondary"
-                                checked={certaintyValue === 'presumed'}
+                                value="PRESUMED"
+                                checked={certaintyValue === 'PRESUMED'}
                             />
                         </RadioButtonGroup>
                     ) : null}

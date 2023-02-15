@@ -1,4 +1,7 @@
-/// <reference types="react" />
+import React from 'react';
 import '../i18n';
-declare const App: () => JSX.Element;
+interface IAppProps {
+    renderComponent: string;
+}
+declare const App: React.FC<IAppProps>;
 export default App;

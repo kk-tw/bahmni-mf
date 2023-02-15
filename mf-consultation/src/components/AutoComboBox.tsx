@@ -4,18 +4,17 @@ import { ComboBoxProps } from 'carbon-components-react';
 import { ComboBox } from '@bahmni-mf/components/ComponentLibrary';
 import fetchDiagnosisSuggestions from '../queries/diagnosis';
 import useDebounce from '../hooks/debounce';
-
-interface ItemType {
-    conceptName: string;
-}
+import { IDiagnosisSearchResult } from '../types/diagnosis';
 
 type ExcludedAttributes = 'items';
 
-interface AutoComboBoxProps extends Omit<ComboBoxProps, ExcludedAttributes> {
-    onSelectItem: (data: { selectedItem: ItemType | null | undefined }) => void;
+interface IAutoComboBoxProps extends Omit<ComboBoxProps, ExcludedAttributes> {
+    onSelectItem: (data: {
+        selectedItem: IDiagnosisSearchResult | null | undefined;
+    }) => void;
 }
 
-const AutoComboBox: React.FC<AutoComboBoxProps> = ({
+const AutoComboBox: React.FC<IAutoComboBoxProps> = ({
     placeholder,
     titleText,
     id,
@@ -56,7 +55,9 @@ const AutoComboBox: React.FC<AutoComboBoxProps> = ({
             onInputChange={(inputText: string) => changeInputText(inputText)}
             id={id}
             items={items}
-            itemToString={(item: ItemType) => (item ? item.conceptName : '')}
+            itemToString={(item: IDiagnosisSearchResult) =>
+                item ? item.conceptName : ''
+            }
             placeholder={placeholder}
             titleText={titleText}
         />

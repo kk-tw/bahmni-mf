@@ -13,7 +13,7 @@ import {
     AddIcon,
 } from '@bahmni-mf/components/ComponentLibrary';
 
-interface MedicationsInfo {
+interface IMedicationsInfo {
     searchValue: string;
     orderValue: string;
 }
@@ -25,7 +25,7 @@ const Medications = () => {
     const [orderValue, setOrderValue] = useState<string>('');
 
     const addMedications = () => {
-        const addMedicationsEvent = new CustomEvent<MedicationsInfo>(
+        const addMedicationsEvent = new CustomEvent<IMedicationsInfo>(
             'ADD_MEDICATIONS',
             {
                 detail: { searchValue, orderValue },

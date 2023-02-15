@@ -13,12 +13,12 @@ const ConsultationMF = () => {
     return <div ref={ref} />;
 };
 
-interface Window {
+interface IWindow {
     mountConsultation: typeof mount;
     unmountConsultation: typeof unmount;
 }
 
-(window as unknown as Window).mountConsultation = mount;
-(window as unknown as Window).unmountConsultation = unmount;
+(window as unknown as IWindow).mountConsultation = mount;
+(window as unknown as IWindow).unmountConsultation = unmount;
 
 export default ConsultationMF;

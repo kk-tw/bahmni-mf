@@ -2,11 +2,11 @@ import React, { lazy, Suspense } from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import '../i18n';
 
-interface AppProps {
+interface IAppProps {
     renderComponent: string;
 }
 
-const App: React.FC<AppProps> = ({ renderComponent }) => {
+const App: React.FC<IAppProps> = ({ renderComponent }) => {
     const queryClient = new QueryClient();
 
     const ComponentLazy = lazy(() => import(`./${renderComponent}`));
