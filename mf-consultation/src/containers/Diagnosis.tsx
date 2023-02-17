@@ -15,6 +15,8 @@ import {
 import AutoComboBox from '../components/AutoComboBox';
 import { getDiagnosis, saveDiagnosis } from '../queries/diagnosis';
 import { IDiagnosis, IDiagnosisSearchResult } from '../types/diagnosis';
+import { IPatient } from '../types/patient';
+import { IVisit } from '../types/visit';
 
 interface IDiagnosisInfo {
     codedAnswer: {
@@ -25,7 +27,12 @@ interface IDiagnosisInfo {
     certainty: string;
 }
 
-const Diagnosis = () => {
+interface IDiagnosisProps {
+    patient: IPatient;
+    visit: IVisit;
+}
+
+const Diagnosis: React.FC<IDiagnosisProps> = ({ patient, visit }) => {
     const { t: translate } = useTranslation();
     const queryClient = useQueryClient();
 
@@ -38,9 +45,13 @@ const Diagnosis = () => {
     const [orderValue, setOrderValue] = useState<string>('');
     const [certaintyValue, setCertaintyValue] = useState<string>('');
 
-    const { isLoading, data } = useQuery('diagnosis', getDiagnosis, {
-        refetchOnWindowFocus: false,
-    });
+    const { isLoading, data } = useQuery(
+        'diagnosis',
+        () => getDiagnosis(patient),
+        {
+            refetchOnWindowFocus: true,
+        },
+    );
 
     const saveDiagnosisMutation = useMutation({
         mutationFn: saveDiagnosis,
@@ -48,18 +59,25 @@ const Diagnosis = () => {
             queryClient.invalidateQueries({
                 queryKey: ['diagnosis'],
             });
+            setOrderValue('');
+            setCertaintyValue('');
+            setCurrentDiagnosis({ conceptName: '', conceptUuid: '' });
+            setModalOpen(false);
         },
     });
 
     const addDiagnosis = () => {
-        console.log(currentDiagnosis);
         const savedDiagnosis: IDiagnosis = {
             order: orderValue,
             certainty: certaintyValue,
             uuid: currentDiagnosis.conceptUuid,
         };
 
-        saveDiagnosisMutation.mutate(savedDiagnosis);
+        saveDiagnosisMutation.mutate({
+            diagnosis: savedDiagnosis,
+            patient: patient,
+            visit: visit,
+        });
         const addDiagnosisEvent = new CustomEvent<IDiagnosis>('ADD_DIAGNOSIS', {
             detail: savedDiagnosis,
         });
@@ -70,10 +88,6 @@ const Diagnosis = () => {
         setOrderValue('');
     };
 
-    if (isLoading) {
-        return <SkeletonText />;
-    }
-
     return (
         <>
             <Button
@@ -83,13 +97,6 @@ const Diagnosis = () => {
             >
                 {translate('ADD_DIAGNOSIS')}
             </Button>
-            {data.map((eachDiagnois: IDiagnosisInfo, index: number) => (
-                <div key={`${eachDiagnois.codedAnswer.uuid}-${index}`}>
-                    {eachDiagnois.codedAnswer.name}
-                    Order: {eachDiagnois.order}
-                    Certainty: {eachDiagnois.certainty}
-                </div>
-            ))}
             <SlidingModal open={modelOpen} onClose={() => setModalOpen(false)}>
                 <ModalHeader
                     title={translate('RECORD_DIAGNOSIS')}
@@ -164,6 +171,17 @@ const Diagnosis = () => {
                     }
                 ></ModalFooter>
             </SlidingModal>
+            {isLoading ? (
+                <SkeletonText />
+            ) : (
+                data.map((eachDiagnois: IDiagnosisInfo, index: number) => (
+                    <div key={`${eachDiagnois.codedAnswer.uuid}-${index}`}>
+                        {eachDiagnois.codedAnswer.name}
+                        Order: {eachDiagnois.order}
+                        Certainty: {eachDiagnois.certainty}
+                    </div>
+                ))
+            )}
         </>
     );
 };

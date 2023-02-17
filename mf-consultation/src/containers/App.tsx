@@ -4,9 +4,14 @@ import '../i18n';
 
 interface IAppProps {
     renderComponent: string;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    options?: any;
 }
 
-const App: React.FC<IAppProps> = ({ renderComponent }) => {
+const App: React.FC<IAppProps> = ({
+    renderComponent,
+    options: { patient, visit },
+}) => {
     const queryClient = new QueryClient();
 
     const ComponentLazy = lazy(() => import(`./${renderComponent}`));
@@ -14,7 +19,7 @@ const App: React.FC<IAppProps> = ({ renderComponent }) => {
     return (
         <QueryClientProvider client={queryClient}>
             <Suspense fallback={<p>Loading!</p>}>
-                <ComponentLazy />
+                <ComponentLazy patient={patient} visit={visit} />
             </Suspense>
         </QueryClientProvider>
     );

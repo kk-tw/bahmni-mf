@@ -4,22 +4,37 @@ import {
     SAVE_DIAGNOSIS,
 } from '../constants/queries';
 import { IDiagnosis } from '../types/diagnosis';
+import { IPatient } from '../types/patient';
+import { IVisit } from '../types/visit';
+import { getLocation } from '../utils/helpers';
+import { getData, postData } from '../utils/request';
+
+interface ISaveDiagnosisParams {
+    diagnosis: IDiagnosis;
+    patient: IPatient;
+    visit: IVisit;
+}
 
 const fetchDiagnosisSuggestions = async (locale: string, searchKey: string) => {
-    const response = await fetch(
+    const response = await getData(
         `${FETCH_DIAGNOSIS_SUGGESTIONS}?limit=200&locale=${locale}&term=${searchKey}`,
     );
-    return response.json();
+    return response;
 };
 
-export const getDiagnosis = async () => {
-    const response = await fetch(
-        `${GET_DIAGNOSIS}?patientUuid=3ae1ee52-e9b2-4934-876d-30711c0e3e2f`,
+export const getDiagnosis = async (patient: IPatient) => {
+    const response = await getData(
+        `${GET_DIAGNOSIS}?patientUuid=${patient.uuid}`,
     );
-    return response.json();
+
+    return response;
 };
 
-export const saveDiagnosis = async (diagnosis: IDiagnosis) => {
+export const saveDiagnosis = async ({
+    diagnosis,
+    patient,
+    visit,
+}: ISaveDiagnosisParams) => {
     const req = {
         bahmniDiagnoses: [
             {
@@ -37,16 +52,16 @@ export const saveDiagnosis = async (diagnosis: IDiagnosis) => {
         context: {},
         disposition: null,
         drugOrders: [],
-        encounterDateTime: 1676385067000,
+        encounterDateTime: new Date().getTime(),
         encounterTypeUuid: '81852aee-3f10-11e4-adec-0800271c1b75',
         encounterUuid: '2d61597f-12bb-4707-ad6b-193de0a8a510',
         extensions: {
             mdrtbSpecimen: [],
         },
-        locationUuid: 'baf7bd38-d225-11e4-9c67-080027b662ec',
+        locationUuid: getLocation().uuid,
         observations: [],
         orders: [],
-        patientUuid: '3ae1ee52-e9b2-4934-876d-30711c0e3e2f',
+        patientUuid: patient.uuid,
         providers: [
             {
                 encounterRoleUuid: 'a0b03050-c99b-11e0-9572-0800200c9a66',
@@ -54,19 +69,11 @@ export const saveDiagnosis = async (diagnosis: IDiagnosis) => {
                 uuid: 'c1c26908-3f10-11e4-adec-0800271c1b75',
             },
         ],
-        visitType: 'OPD',
-        visitUuid: '228b811d-3540-4730-b744-10dddd5a9ae8',
+        visitType: visit.visitType.name || 'OPD',
+        visitUuid: visit.uuid,
     };
-    const response = await fetch(SAVE_DIAGNOSIS, {
-        method: 'POST', // *GET, POST, PUT, DELETE, etc.
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        redirect: 'follow',
-        body: JSON.stringify(req),
-    });
-
-    return response.json();
+    const response = await postData(SAVE_DIAGNOSIS, req);
+    return response;
 };
 
 export default fetchDiagnosisSuggestions;
