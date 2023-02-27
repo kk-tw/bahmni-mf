@@ -29,7 +29,6 @@ module.exports = {
     collectCoverageFrom: [
         'src/**/*.{js,ts,jsx,tsx}',
         '!src/types/*.{js,jsx,ts,tsx}',
-        '!src/App.tsx',
         '!src/index.ts',
     ],
     coverageReporters: ['json', 'lcov', 'text', 'clover', 'cobertura'],
